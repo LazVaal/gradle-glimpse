@@ -1,0 +1,39 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin require-restart="true">
+
+    <id>com.lazvaal.gradleglimpse</id>
+    <name>Gradle Glimpse</name>
+    <vendor url="https://github.com/LazVaal/gradle-glimpse">LazVaal</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
+    <description><![CDATA[
+        <p><b>A lifesaver for Flutter developers migrating to AGP 8 and 9.</b></p>
+        <p>Updating the Android Gradle Plugin (AGP) in a mature Flutter project often breaks the build due to hidden legacy native dependencies. Gradle Glimpse lives inside your <code>pubspec.yaml</code> to give you instant diagnostic insights.</p>
+        <br/>
+        <b>Features:</b>
+        <ul>
+            <li><b>Instant Compatibility Checks:</b> Hover over any Android-enabled plugin in your pubspec to instantly see its AGP version.</li>
+            <li><b>Transitive Dependency Tracing:</b> Uncover "hidden" native Android dependencies dragged in by pure Dart packages.</li>
+            <li><b>AGP 9 Readiness:</b> Automatically detects critical AGP 9 blockers, such as the legacy <code>kotlin-android</code> plugin, missing namespaces, and outdated Java requirements.</li>
+            <li><b>Flutter Auto-Healing Detection:</b> Intelligently warns you when Flutter is secretly patching legacy code at runtime.</li>
+        </ul>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        <ul>
+            <li><b>1.0.0</b> - Initial release: Full AGP compatibility scanning, transitive dependency tracing, and IDE hover UI.</li>
+        </ul>
+    ]]></change-notes>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>org.jetbrains.plugins.yaml</depends>
+    <depends>com.intellij.modules.platform</depends>
+    <extensions defaultExtensionNs="com.intellij">
+        <codeInsight.lineMarkerProvider
+            language="yaml"
+            implementationClass="com.lazvaal.gradleglimpse.PubspecLineMarkerProvider"/>
+    </extensions>
+
+</idea-plugin>

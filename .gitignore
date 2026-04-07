@@ -1,0 +1,14 @@
+.gradle
+.idea
+.intellijPlatform
+build
+
+# IntelliJ IDEA IDE workspace
+*.iml
+
+# Local Configuration
+local.properties
+
+# OS specific hidden files
+.DS_Store
+Thumbs.db
