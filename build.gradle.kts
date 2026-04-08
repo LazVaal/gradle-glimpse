@@ -38,6 +38,16 @@ intellijPlatform {
             sinceBuild = providers.gradleProperty("pluginSinceBuild")
         }
     }
+
+    signing {
+        certificateChain.set(file("chain.crt").readText())
+        privateKey.set(file("private.pem").readText())
+        password.set("")
+    }
+
+    publishing {
+        token.set(System.getenv("JETBRAINS_TOKEN"))
+    }
 }
 
 tasks {
