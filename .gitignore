@@ -12,3 +12,7 @@ local.properties
 # OS specific hidden files
 .DS_Store
 Thumbs.db
+
+# JetBrains Plugin Signing Keys
+private.pem
+chain.crt

@@ -1,118 +1,64 @@
-# IntelliJ Platform Plugin Template
+<div align="center">
+  <img src="src/main/resources/META-INF/pluginIcon.svg" alt="Gradle Glimpse Logo" width="120" height="120">
 
-[![Twitter Follow](https://img.shields.io/badge/follow-%40JBPlatform-1DA1F2?logo=twitter)](https://twitter.com/JBPlatform)
-[![Developers Forum](https://img.shields.io/badge/JetBrains%20Platform-Join-blue)][jb:forum]
+# Gradle Glimpse
 
-## Plugin template structure
+**A lifesaver for Flutter developers migrating to AGP 8 and 9.**
+</div>
 
-A generated project contains the following content structure:
+---
 
-```
-.
-├── .run/                   Predefined Run/Debug Configurations
-├── build/                  Output build directory
-├── gradle
-│   ├── wrapper/            Gradle Wrapper
-│   ├── libs.versions.toml  Version catalog
-├── src                     Plugin sources
-│   ├── main
-│   │   ├── kotlin/         Kotlin production sources
-│   │   └── resources/      Resources - plugin.xml, icons, messages
-├── .gitignore              Git ignoring rules
-├── build.gradle.kts        Gradle build configuration
-├── gradle.properties       Gradle configuration properties
-├── gradlew                 *nix Gradle Wrapper script
-├── gradlew.bat             Windows Gradle Wrapper script
-├── README.md               README
-└── settings.gradle.kts     Gradle project settings
-```
+Updating the Android Gradle Plugin (AGP) in a mature Flutter project often breaks the build due to hidden legacy native dependencies. **Gradle Glimpse** is an Android Studio and IntelliJ IDEA plugin that lives right inside your `pubspec.yaml`, giving you instant diagnostic insights into the native Android health of your Flutter packages.
 
-In addition to the configuration files, the most crucial part is the `src` directory, which contains our implementation
-and the manifest for our plugin – [plugin.xml][file:plugin.xml].
+## ✨ Features
 
-> [!NOTE]
-> To use Java in your plugin, create the `/src/main/java` directory.
+* **🔍 Instant Compatibility Checks:** Hover over any Android-enabled plugin in your `pubspec.yaml` to instantly see its required AGP version.
+* **🧩 Transitive Dependency Tracing:** Uncover "hidden" native Android dependencies dragged in by pure Dart packages (e.g., finding out a harmless UI package is secretly pulling in a broken legacy Android library).
+* **🚨 AGP 9 Readiness:** Automatically detects critical AGP 9 compilation blockers, including:
+    * The legacy `kotlin-android` apply script syntax.
+    * Missing Android namespaces.
+    * Hardcoded, outdated Java requirements (<= Java 11).
+* **🛠 Flutter Auto-Healing Detection:** Intelligently warns you when Flutter's background scripts are secretly patching legacy code at runtime, allowing you to address technical debt before it breaks in future updates.
 
-## Plugin configuration file
+## 🚀 Installation
 
-The plugin configuration file is a [plugin.xml][file:plugin.xml] file located in the `src/main/resources/META-INF`
-directory.
-It provides general information about the plugin, its dependencies, extensions, and listeners.
+**Via JetBrains Marketplace (Recommended)**
+1. Open Android Studio or IntelliJ IDEA.
+2. Navigate to **Settings / Preferences** > **Plugins** > **Marketplace**.
+3. Search for **"Gradle Glimpse"**.
+4. Click **Install** and restart your IDE.
 
-You can read more about this file in the [Plugin Configuration File][docs:plugin.xml] section of our documentation.
+**Manual Installation**
+1. Download the latest `.zip` release from the JetBrains Marketplace web page.
+2. Go to **Settings** > **Plugins** > ⚙️ (Gear Icon) > **Install Plugin from Disk...**
+3. Select the `.zip` file and restart your IDE.
 
-If you're still not quite sure what this is all about, read our
-introduction: [What is the IntelliJ Platform?][docs:intro]
+## 💡 Usage
 
-$H$H Predefined Run/Debug configurations
+Gradle Glimpse requires zero configuration!
 
-Within the default project structure, there is a `.run` directory provided containing predefined *Run/Debug
-configurations* that expose corresponding Gradle tasks:
+1. Open any Flutter project in Android Studio.
+2. Ensure you have run `flutter pub get` so your `.dart_tool` cache is populated.
+3. Open your `pubspec.yaml` file.
+4. Look for the Glimpse icons in the left-hand gutter next to your dependencies.
+    * ✅ **Green Checkmark:** All native dependencies are fully modernized.
+    * ❌ **Red Warning:** Legacy Android issues detected.
+5. **Hover over the icon** to see the full diagnostic tree and your project's safe AGP upgrade range!
 
-| Configuration name | Description                                                                                                                                                                         |
-|--------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Run Plugin         | Runs [`:runIde`][gh:intellij-platform-gradle-plugin-runIde] IntelliJ Platform Gradle Plugin task. Use the *Debug* icon for plugin debugging.                                        |
-| Run Tests          | Runs [`:test`][gradle:lifecycle-tasks] Gradle task.                                                                                                                                 |
-| Run Verifications  | Runs [`:verifyPlugin`][gh:intellij-platform-gradle-plugin-verifyPlugin] IntelliJ Platform Gradle Plugin task to check the plugin compatibility against the specified IntelliJ IDEs. |
+## 🛠 Building from Source
 
-> [!NOTE]
-> You can find the logs from the running task in the `idea.log` tab.
+If you want to contribute to Gradle Glimpse or build it locally, you don't need to have Gradle pre-installed. The repository includes a Gradle Wrapper.
 
-## Publishing the plugin
+```bash
+# Clone the repository
+git clone [https://github.com/LazVaal/gradle-glimpse.git](https://github.com/LazVaal/gradle-glimpse.git)
+cd gradle-glimpse
 
-> [!TIP]
-> Make sure to follow all guidelines listed in [Publishing a Plugin][docs:publishing] to follow all recommended and
-> required steps.
+# Run the automated test suite
+./gradlew test
 
-Releasing a plugin to [JetBrains Marketplace](https://plugins.jetbrains.com) is a straightforward operation that uses
-the `publishPlugin` Gradle task provided by
-the [intellij-platform-gradle-plugin][gh:intellij-platform-gradle-plugin-docs].
+# Build the plugin .zip artifact (Outputs to build/distributions/)
+./gradlew buildPlugin
 
-You can also upload the plugin to the [JetBrains Plugin Repository](https://plugins.jetbrains.com/plugin/upload)
-manually via UI.
-
-## Useful links
-
-- [IntelliJ Platform SDK Plugin SDK][docs]
-- [IntelliJ Platform Gradle Plugin Documentation][gh:intellij-platform-gradle-plugin-docs]
-- [IntelliJ Platform Explorer][jb:ipe]
-- [JetBrains Marketplace Quality Guidelines][jb:quality-guidelines]
-- [IntelliJ Platform UI Guidelines][jb:ui-guidelines]
-- [JetBrains Marketplace Paid Plugins][jb:paid-plugins]
-- [IntelliJ SDK Code Samples][gh:code-samples]
-
-[docs]: https://plugins.jetbrains.com/docs/intellij
-
-[docs:intro]: https://plugins.jetbrains.com/docs/intellij/intellij-platform.html?from=IJPluginTemplate
-
-[docs:plugin.xml]: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html?from=IJPluginTemplate
-
-[docs:publishing]: https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate
-
-[file:plugin.xml]: ./src/main/resources/META-INF/plugin.xml
-
-[gh:code-samples]: https://github.com/JetBrains/intellij-sdk-code-samples
-
-[gh:intellij-platform-gradle-plugin]: https://github.com/JetBrains/intellij-platform-gradle-plugin
-
-[gh:intellij-platform-gradle-plugin-docs]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin.html
-
-[gh:intellij-platform-gradle-plugin-runIde]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html#runIde
-
-[gh:intellij-platform-gradle-plugin-verifyPlugin]: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-tasks.html#verifyPlugin
-
-[gradle:lifecycle-tasks]: https://docs.gradle.org/current/userguide/java_plugin.html#lifecycle_tasks
-
-[jb:github]: https://github.com/JetBrains/.github/blob/main/profile/README.md
-
-[jb:forum]: https://platform.jetbrains.com/
-
-[jb:quality-guidelines]: https://plugins.jetbrains.com/docs/marketplace/quality-guidelines.html
-
-[jb:paid-plugins]: https://plugins.jetbrains.com/docs/marketplace/paid-plugins-marketplace.html
-
-[jb:quality-guidelines]: https://plugins.jetbrains.com/docs/marketplace/quality-guidelines.html
-
-[jb:ipe]: https://jb.gg/ipe
-
-[jb:ui-guidelines]: https://jetbrains.github.io/ui
+# Run a sandboxed IDE to test changes live
+./gradlew runIde
