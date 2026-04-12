@@ -5,32 +5,53 @@
     <name>Gradle Glimpse</name>
     <vendor url="https://github.com/LazVaal/gradle-glimpse">LazVaal</vendor>
 
-    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
     <description><![CDATA[
         <p><b>A lifesaver for Flutter developers migrating to AGP 8 and 9.</b></p>
         <p>Updating the Android Gradle Plugin (AGP) in a mature Flutter project often breaks the build due to hidden legacy native dependencies. Gradle Glimpse lives inside your <code>pubspec.yaml</code> to give you instant diagnostic insights.</p>
         <br/>
         <b>Features:</b>
         <ul>
-            <li><b>Instant Compatibility Checks:</b> Hover over any Android-enabled plugin in your pubspec to instantly see its AGP version.</li>
+            <li><b>Project-Wide Diagnostics:</b> Hover over the <code>dependencies:</code> key for a complete AGP upgrade verdict, showing the absolute maximum safe AGP version for your entire project.</li>
+            <li><b>Instant Compatibility Checks:</b> Hover over any Android-enabled plugin in your pubspec to instantly see its AGP version and compatibility status.</li>
             <li><b>Transitive Dependency Tracing:</b> Uncover "hidden" native Android dependencies dragged in by pure Dart packages.</li>
             <li><b>AGP 9 Readiness:</b> Automatically detects critical AGP 9 blockers, such as the legacy <code>kotlin-android</code> plugin, missing namespaces, and outdated Java requirements.</li>
             <li><b>Flutter Auto-Healing Detection:</b> Intelligently warns you when Flutter is secretly patching legacy code at runtime.</li>
+            <li><b>Real-Time Syncing:</b> Intelligently watches your file system and instantly updates diagnostics the moment you run <code>flutter pub get</code>.</li>
+            <li><b>Customizable UI:</b> Toggle the visibility of Glimpse markers at any time via the View menu or right-click context menu.</li>
         </ul>
     ]]></description>
 
     <change-notes><![CDATA[
+        <b>1.0.1</b>
         <ul>
-            <li><b>1.0.0</b> - Initial release: Full AGP compatibility scanning, transitive dependency tracing, and IDE hover UI.</li>
+            <li><b>New Feature:</b> Added a project-wide diagnostic summary. Hover over the <code>dependencies:</code> key in your <code>pubspec.yaml</code> for a complete AGP upgrade verdict.</li>
+            <li><b>New Feature:</b> Added a visibility toggle. You can now hide/show Gradle Glimpse icons via the main <i>View</i> menu or by right-clicking in the editor.</li>
+            <li><b>Bug Fix:</b> Fixed the "Infinite Cache" bug. Icons and diagnostic data will now instantly update when you save the file or run <code>flutter pub get</code>, without requiring an IDE restart.</li>
+        </ul>
+        <br/>
+        <b>1.0.0</b>
+        <ul>
+            <li>Initial release: Full AGP compatibility scanning, transitive dependency tracing, and IDE hover UI.</li>
         </ul>
     ]]></change-notes>
 
-    <!-- Product and plugin compatibility requirements.
-         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
     <depends>org.jetbrains.plugins.yaml</depends>
     <depends>com.intellij.modules.platform</depends>
+
+    <actions>
+        <action id="GradleGlimpse.ToggleIcons"
+                class="com.lazvaal.gradleglimpse.ToggleGlimpseIconsAction"
+                text="Toggle Gradle Glimpse Icons"
+                description="Toggle the visibility of Gradle Glimpse AGP markers in the sidebar">
+
+            <add-to-group group-id="ViewMenu" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </action>
+    </actions>
+
     <extensions defaultExtensionNs="com.intellij">
+        <postStartupActivity implementation="com.lazvaal.gradleglimpse.PubGetListener"/>
+
         <codeInsight.lineMarkerProvider
             language="yaml"
             implementationClass="com.lazvaal.gradleglimpse.PubspecLineMarkerProvider"/>
